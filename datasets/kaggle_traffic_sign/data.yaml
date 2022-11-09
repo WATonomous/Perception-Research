@@ -1,0 +1,10 @@
+# Dataset paths relative to the yolov5 folder
+train: /datasets/kaggle_traffic_sign/data/images/train
+val:   /datasets/kaggle_traffic_sign/data/images/val
+test:  /datasets/kaggle_traffic_sign/data/images/test
+
+# Number of classes
+nc: 4
+
+# Class names 0 - cat, 1 - dog
+names: ["prohibitory", "danger", "mandatory", "other"]

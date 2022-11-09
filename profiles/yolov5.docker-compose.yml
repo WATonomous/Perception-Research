@@ -1,0 +1,15 @@
+services:
+  yolov5: # Dockerfile converted from https://github.com/ultralytics/yolov5/wiki/Docker-Quickstart
+    image: ultralytics/yolov5:latest
+    ports:
+      - "6006:6006"
+    volumes: 
+      - ../datasets:/datasets
+    ipc: host
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
