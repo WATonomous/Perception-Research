@@ -1,0 +1,15 @@
+services:
+  vm: 
+    build:
+      context: .
+      dockerfile: ../docker/vm/Dockerfile
+    ipc: host
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../models:/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
