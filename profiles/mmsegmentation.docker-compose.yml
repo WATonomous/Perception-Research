@@ -1,15 +1,13 @@
 services:
-  vm: 
+  mmsegmentation: 
     build:
       context: .
-      dockerfile: ../docker/vm/Dockerfile
-    ports:
-      - "8887:8888"
+      dockerfile: ../docker/mmsegmentation/Dockerfile
     ipc: host
     stdin_open: true
     tty: true
     volumes:
-      - ../:/Perception-Research
+      - ../models:/models
     deploy:
       resources:
         reservations:
