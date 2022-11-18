@@ -23,6 +23,6 @@ RUN pip install nuscenes-devkit
 RUN pip install mpi4py==3.0.3
 RUN pip install numba==0.48.0
 WORKDIR /root
-RUN git clone https://github.com/mit-han-lab/bevfusion
+COPY src/bevfusion /root/bevfusion
 WORKDIR /root/bevfusion
 RUN python setup.py develop

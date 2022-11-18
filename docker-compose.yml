@@ -9,7 +9,10 @@ services:
     tty: true
 
     volumes:
-      - ./src/bevfusion:/root/bevfusion
+      # TODO: Find out a way to mount source code without overwriting 
+      # the effect of running `python setup.py develop`
+      - ./src/bevfusion/.vscode:/root/bevfusion/.vscode
+      - ./src/bevfusion/.gitignore:/root/bevfusion/.gitignore
       - /mnt/scratch/nuscenes_BEVFUSION/nuscenes_BEVFUSION:/root/bevfusion/data/nuscenes
       - /mnt/scratch/nuscenes_BEVFUSION/nuscenes_BEVFUSION:/drive_dataset
       - /mnt/scratch/bevfusion_pretrain:/pretrain
