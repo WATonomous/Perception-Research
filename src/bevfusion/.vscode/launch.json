@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/test.py",
+            "console": "integratedTerminal",
+            "args": ["configs/nuscenes/det/transfusion/secfpn/camera+lidar/swint_v0p075/convfuser.yaml", "/pretrain/bevfusion-det.pth", "--eval", "bbox"],
+            "justMyCode": true,
+            "env": {"MASTER_HOST": "localhost:12345", "CUDA_VISIBLE_DEVICES": "1,2"}
+        }
+    ]
+}

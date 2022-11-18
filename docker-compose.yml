@@ -1,0 +1,102 @@
+services:
+  bevfusion: 
+    build:
+      context: .
+      dockerfile: docker/bevfusion/Dockerfile
+    image: git.uwaterloo.ca:5050/watonomous/registry/perception-research/bevfusion
+
+    ipc: host
+    tty: true
+
+    volumes:
+      - ./src/bevfusion:/root/bevfusion
+      - /mnt/scratch/nuscenes_BEVFUSION/nuscenes_BEVFUSION:/root/bevfusion/data/nuscenes
+      - /mnt/scratch/nuscenes_BEVFUSION/nuscenes_BEVFUSION:/drive_dataset
+      - /mnt/scratch/bevfusion_pretrain:/pretrain
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+
+  mmdetection3d: 
+    build:
+      context: .
+      dockerfile: docker/mmdetection3d/Dockerfile
+    image: git.uwaterloo.ca:5050/watonomous/registry/perception-research/mmdetection3d
+
+    ipc: host
+    stdin_open: true
+    tty: true
+
+    volumes:
+      - ./:/Perception-Research
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+
+  mmsegmentation: 
+    build:
+      context: .
+      dockerfile: docker/mmsegmentation/Dockerfile
+    image: git.uwaterloo.ca:5050/watonomous/registry/perception-research/mmsegmentation
+
+    ipc: host
+    stdin_open: true
+    tty: true
+
+    volumes:
+      - ./src/models:/models
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+
+  vm: 
+    build:
+      context: .
+      dockerfile: docker/vm/Dockerfile
+    image: git.uwaterloo.ca:5050/watonomous/registry/perception-research/vm
+
+    ports:
+      - "8887:8888"
+    ipc: host
+    stdin_open: true
+    tty: true
+
+    volumes:
+      - ./:/Perception-Research
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+
+  yolov5: # Dockerfile converted from https://github.com/ultralytics/yolov5/wiki/Docker-Quickstart
+    image: ultralytics/yolov5:latest
+
+    ports:
+      - "6006:6006"
+    ipc: host
+    stdin_open: true
+    tty: true
+
+    volumes: 
+      - /mnt/wato-drive/perception:/datasets
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
