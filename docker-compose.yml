@@ -86,7 +86,7 @@ services:
             - capabilities: [gpu]
 
 
-  yolov5: # Dockerfile converted from https://github.com/ultralytics/yolov5/wiki/Docker-Quickstart
+  yolov5: 
     image: ultralytics/yolov5:latest
 
     ports:
