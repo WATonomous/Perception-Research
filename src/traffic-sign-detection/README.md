@@ -29,3 +29,9 @@ ssh -NfL 6006:localhost:6006 <username>@<hostname> # ex: s36gong@trpro-ubuntu1.w
 ```
 
 Then, go to http://localhost:6006/ and you should be able to see tensorboard running.
+
+### Resources
+Some resources we consulted for this project:
+- https://kikaben.com/yolov5-transfer-learning-dogs-cats/
+- https://github.com/ultralytics/yolov5/issues/1314
+- https://pyimagesearch.com/2022/06/20/training-the-yolov5-object-detector-on-a-custom-dataset/

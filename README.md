@@ -19,15 +19,6 @@ docker exec -it <ContainerID> /bin/bash
 
 If you want to develop from the inside container itself, we recommend using VSCode built-in Docker container.
 
-## Current Investigation Areas
-### Traffic Sign Classification with YOLOv5
-YOLOv5 for transfer learning with traffic signs. We are getting the traffic sign detection from:
-- https://www.kaggle.com/code/hemraj12/traffic-signs-detection-on-carla-simulator/data?select=ts
-
-Some Training Pages:
-- https://kikaben.com/yolov5-transfer-learning-dogs-cats/
-- https://github.com/ultralytics/yolov5/issues/1314
-- https://pyimagesearch.com/2022/06/20/training-the-yolov5-object-detector-on-a-custom-dataset/
-
 ## File Structure
-- `src` for storing the code to investigate models
+- `docker/` contains a set of custom `Dockerfile` to build our own containers
+- `src/` contains the source code for our investigation projects, usually accompanied their own separate `README.md` to explain how the project is being conducted.
