@@ -1,4 +1,43 @@
 services:
+  lss: 
+    build:
+      context: .
+      dockerfile: docker/vm/Dockerfile
+    image: git.uwaterloo.ca:5050/watonomous/registry/perception-research/vm
+
+    ipc: host
+    stdin_open: true
+    tty: true
+
+    volumes:
+      - /mnt/wato-drive/perception/nuscenes_CLEAN:/nuscenes/trainval
+      - /mnt/wato-drive/perception/nuscenes_CLEAN/maps:/nuscenes/maps
+      - /mnt/scratch/lss:/lss
+      - ./src/lift-splat-shoot:/lift-splat-shoot
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+  foxglove: 
+    image: ghcr.io/foxglove/studio:latest
+    ipc: host
+    tty: true
+
+    ports:
+      - "8082:8080"
+
+    volumes:
+      - /mnt/wato-drive/perception:/datasets
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
   bevfusion: 
     build:
       context: .
@@ -9,10 +48,12 @@ services:
     tty: true
 
     volumes:
-      # TODO: Find out a way to mount source code without overwriting 
+      # TODO: Find out a way to mount source code without overwriting
       # the effect of running `python setup.py develop`
       - ./src/bevfusion/.vscode:/root/bevfusion/.vscode
       - ./src/bevfusion/.gitignore:/root/bevfusion/.gitignore
+      - ./src/bevfusion/tools:/root/bevfusion/tools
+      # - ./src/bevfusion/mmdet3d:/root/bevfusion/mmdet3d # This breaks the code
       - /mnt/scratch/nuscenes_BEVFUSION/nuscenes_BEVFUSION:/root/bevfusion/data/nuscenes
       - /mnt/scratch/nuscenes_BEVFUSION/nuscenes_BEVFUSION:/drive_dataset
       - /mnt/scratch/bevfusion_pretrain:/pretrain
