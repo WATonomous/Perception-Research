@@ -165,9 +165,9 @@ services:
     command: /bin/bash -c "jupyter notebook --no-browser --allow-root --ip 0.0.0.0"
 
     ports:
-      - "${IPYNB_PORT}:8888"
+      - "8886:8888"
     volumes:
-      - src/carla:/home/carla
+      - ./src/carla:/home/carla
 
     ipc: host
     tty: True
