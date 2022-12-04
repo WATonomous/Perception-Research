@@ -1,4 +1,26 @@
 services:
+  centerpoint: 
+    build:
+      context: .
+      dockerfile: docker/centerpoint/Dockerfile
+    image: git.uwaterloo.ca:5050/watonomous/registry/perception-research/centerpoint
+
+    ipc: host
+    tty: true
+
+    volumes:
+      # TODO: Find out a way to mount source code without overwriting
+      # the effect of running `python setup.py develop`
+      - /mnt/wato-drive/perception/nuscenes_CLEAN:/CenterPoint/data/nuScenes
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+
+
   lss: 
     build:
       context: .

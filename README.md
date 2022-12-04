@@ -22,3 +22,14 @@ If you want to develop from the inside container itself, we recommend using VSCo
 ## File Structure
 - `docker/` contains a set of custom `Dockerfile` to build our own containers
 - `src/` contains the source code for our investigation projects, usually accompanied their own separate `README.md` to explain how the project is being conducted.
+
+## Datasets
+We have a few datasets downloaded already on our servers. The following are the paths to access the datasets:
+
+General
+- KITTI: `/mnt/wato-drive/perception/KITTI`
+- nuScenes: `/mnt/wato-drive/perception/nuscenes_CLEAN`
+
+
+The following are only accessible if you are on the `trpro` server. We downloaded the datasets specifically on the `trpro` machine to have faster write and read when processing the dataset:
+- nuScenes: `/mnt/scratch/nuscenes_CLEAN`
