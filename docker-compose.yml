@@ -180,22 +180,44 @@ services:
           devices:
             - capabilities: [gpu]
 
-  carla_dev:
-    build:
-      dockerfile: docker/carla_dev/Dockerfile
-    runtime: nvidia
-    command: /bin/bash -c "jupyter notebook --no-browser --allow-root --ip 0.0.0.0"
+  # carla_dev:
+  #   build:
+  #     dockerfile: docker/carla_dev/Dockerfile
+  #   runtime: nvidia
+  #   command: /bin/bash -c "jupyter notebook --no-browser --allow-root --ip 0.0.0.0"
 
-    ports:
-      - "8886:8888"
-    volumes:
-      - ./src/carla:/home/carla
+  #   ports:
+  #     - "8886:8888"
+  #   volumes:
+  #     - ./src/carla:/home/carla
+
+  #   ipc: host
+  #   tty: True
+
+  #   depends_on:
+  #     - carla_server
+
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - capabilities: [gpu]
+
+
+  pgp: 
+    build:
+      context: .
+      dockerfile: docker/pgp/Dockerfile
+    image: git.uwaterloo.ca:5050/watonomous/registry/perception-research/pgp-new-cuda
 
     ipc: host
-    tty: True
+    tty: true
 
-    depends_on:
-      - carla_server
+    volumes:
+      - ./src/PGP/:/root/pgp/
+      - /mnt/scratch/nuscenes_CLEAN:/nuscenes_CLEAN:ro
+      - /mnt/scratch/nuscenes_PGP_PREPROCESS:/nuscenes_PGP_PREPROCESS:ro
+      - /mnt/scratch/PGP_lr-scheduler.tar:/PGP_lr-scheduler.tar:ro
 
     deploy:
       resources:
