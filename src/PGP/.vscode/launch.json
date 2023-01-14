@@ -21,6 +21,15 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": ["-c", "configs/preprocess_nuscenes.yml", "-r", "/nuscenes_CLEAN", "-d", "/nuscenes_PGP_PREPROCESS"]
+        },
+        {
+            "name": "pre-mini",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/preprocess.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": ["-c", "configs/preprocess_nuscenes.yml", "-r", "/nuscenes_CLEAN", "-d", "/root/pgp/mini_preprocess"]
         }
     ]
 }
