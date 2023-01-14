@@ -1,4 +1,5 @@
 from datasets.interface import SingleAgentDataset
+from datasets.visual_data_helper import VisualDataHelper
 from nuscenes.eval.prediction.splits import get_prediction_challenge_split
 from nuscenes.prediction import PredictHelper
 import numpy as np
@@ -23,6 +24,7 @@ class NuScenesTrajectories(SingleAgentDataset):
         """
         super().__init__(mode, data_dir)
         self.helper = helper
+        self.vd_helper = VisualDataHelper(helper.data)
 
         # nuScenes sample and instance tokens for prediction challenge
         self.token_list = get_prediction_challenge_split(args['split'], dataroot=helper.data.dataroot)
@@ -47,11 +49,13 @@ class NuScenesTrajectories(SingleAgentDataset):
         map_representation = self.get_map_representation(idx)
         surrounding_agent_representation = self.get_surrounding_agent_representation(idx)
         target_agent_representation = self.get_target_agent_representation(idx)
+        target_agent_visuals = self.vd_helper.get_target_agent_visuals(s_t, i_t, self.t_h)
         inputs = {'instance_token': i_t,
                   'sample_token': s_t,
                   'map_representation': map_representation,
                   'surrounding_agent_representation': surrounding_agent_representation,
-                  'target_agent_representation': target_agent_representation}
+                  'target_agent_representation': target_agent_representation,
+                  'target_agent_visuals': target_agent_visuals}
         return inputs
 
     def get_ground_truth(self, idx: int) -> Dict:

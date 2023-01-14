@@ -7,7 +7,7 @@ import pickle
 from train_eval.initialization import get_specific_args, initialize_dataset
 
 
-def preprocess_data(cfg: Dict, data_root: str, data_dir: str, compute_stats=True, extract=True):
+def preprocess_data(cfg: Dict, data_root: str, data_dir: str, compute_stats=True, extract=False):
     """
     Main function for pre-processing data
 
@@ -82,6 +82,9 @@ def compute_dataset_stats(dataset_splits: List[TrajectoryDataset], batch_size: i
                 print("mini batch " + str(mini_batch_count + 1) + '/' + str(num_mini_batches))
                 mini_batch_count += 1
 
+    # Print stats
+    if verbose:
+        print(stats)
     # Save stats
     filename = os.path.join(dataset_splits[0].data_dir, 'stats.pickle')
     with open(filename, 'wb') as handle:
