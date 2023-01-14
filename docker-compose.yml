@@ -182,7 +182,10 @@ services:
 
   carla_dev:
     build:
+      context: .
       dockerfile: docker/carla_dev/Dockerfile
+    image: git.uwaterloo.ca:5050/watonomous/registry/perception-research/carla_dev
+
     runtime: nvidia
     command: /bin/bash -c "jupyter notebook --no-browser --allow-root --ip 0.0.0.0"
 

@@ -30,7 +30,7 @@ RUN ln -sf /usr/bin/python3.7 /usr/bin/python3
 RUN python3 -m pip install pip -U
 
 WORKDIR /home
-COPY ../src/carla carla
+COPY src/carla carla
 
 # carla python api dependencies
 RUN python3 -m pip --no-cache-dir install --upgrade -r \
