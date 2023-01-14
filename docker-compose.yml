@@ -205,4 +205,26 @@ services:
         reservations:
           devices:
             - capabilities: [gpu]
+
+
+  pgp: 
+    build:
+      context: .
+      dockerfile: docker/pgp/Dockerfile
+    image: git.uwaterloo.ca:5050/watonomous/registry/perception-research/pgp-new-cuda
+
+    ipc: host
+    tty: true
+
+    volumes:
+      - ./src/PGP/:/root/pgp/
+      - /mnt/scratch/nuscenes_CLEAN:/nuscenes_CLEAN:ro
+      - /mnt/scratch/nuscenes_PGP_PREPROCESS:/nuscenes_PGP_PREPROCESS
+      - /mnt/scratch/PGP_lr-scheduler.tar:/PGP_lr-scheduler.tar:ro
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
             
