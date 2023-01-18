@@ -1,4 +1,7 @@
 import numpy as np
+import torch
+from PIL import Image
+from cv2 import imread, cvtColor, COLOR_BGR2RGB
 from pyquaternion.quaternion import Quaternion
 from typing import List, Tuple, Union, Dict
 from shapely.geometry import MultiPoint, box
@@ -6,9 +9,26 @@ from shapely.geometry import MultiPoint, box
 from nuscenes.nuscenes import NuScenes
 from nuscenes.utils.geometry_utils import view_points
 
+from torchvision import transforms
+
 class VisualDataHelper(object):
-    def __init__(self, nusc: NuScenes):
+    def __init__(self, nusc: NuScenes, transform: transforms.Compose = None):
         self.nusc = nusc
+        if transform is None:
+            self.transform = None
+        else:
+            self.transform = self._compose_transform(transform)
+
+    def _compose_transform(self, transform: Dict) -> transforms.Compose:
+        comp = []
+        if 'resize' in transform:
+            comp.append(transforms.Resize(transform['resize']))
+        if 'to_tensor' in transform and transform['to_tensor']:
+            comp.append(transforms.ToTensor())
+        if 'normalize' in transform:
+            norm = transform['normalize']
+            comp.append(transforms.Normalize(mean=norm['mean'], std=norm['std']))
+        return transforms.Compose(comp)
 
     def _ann_token_from_sample_instance(self, s_tok: str, i_tok: str) -> str:
         """
@@ -36,7 +56,6 @@ class VisualDataHelper(object):
         """
         polygon_from_2d_box = MultiPoint(corner_coords).convex_hull
         img_canvas = box(0, 0, imsize[0], imsize[1])
-
         if polygon_from_2d_box.intersects(img_canvas):
             img_intersection = polygon_from_2d_box.intersection(img_canvas)
             intersection_coords = np.array([coord for coord in img_intersection.exterior.coords])
@@ -150,3 +169,15 @@ class VisualDataHelper(object):
             if view:
                 curr_channel = view['cam_channel']
         return views
+    
+    def load_visuals(self, data: Dict):
+        if self.transform is None:
+            return data
+        visuals = data['inputs']['target_agent_visuals']
+        imgs = [Image.open(f"{self.nusc.dataroot}/{v['cam_file']}") for v in visuals]
+        imgs = [img.convert("RGB") for img in imgs]
+        data['inputs']['target_agent_images'] = \
+            torch.stack([self.transform(img) for img in imgs])
+        return data
+
+

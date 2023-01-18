@@ -4,6 +4,13 @@ version: 'v1.0-trainval'
 agent_setting: 'single_agent'
 input_representation: 'graphs'
 
+common_transform: &common_transform
+  resize: [256, 256]
+  to_tensor: true
+  normalize:
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+
 train_set_args: &ds_args
   split: 'train'
   t_h: 2
@@ -13,19 +20,25 @@ train_set_args: &ds_args
   polyline_length: 20
   traversal_horizon: 15
   random_flips: True
+  transform:
+    <<: *common_transform
 
 val_set_args:
   <<: *ds_args
   split: 'train_val'
   random_flips: False
+  transform:
+    <<: *common_transform
 
 test_set_args:
   <<: *ds_args
   split: 'val'
   random_flips: False
+  transform:
+    <<: *common_transform
 
 batch_size: 32
-num_workers: 32
+num_workers: 4
 
 
 # Encoder parameters

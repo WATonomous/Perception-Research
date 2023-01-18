@@ -24,7 +24,7 @@ class NuScenesTrajectories(SingleAgentDataset):
         """
         super().__init__(mode, data_dir)
         self.helper = helper
-        self.vd_helper = VisualDataHelper(helper.data)
+        self.vd_helper = VisualDataHelper(helper.data, args['transform'] if 'transform' in args else None)
 
         # nuScenes sample and instance tokens for prediction challenge
         self.token_list = get_prediction_challenge_split(args['split'], dataroot=helper.data.dataroot)
@@ -91,7 +91,7 @@ class NuScenesTrajectories(SingleAgentDataset):
 
         with open(filename, 'rb') as handle:
             data = pickle.load(handle)
-        return data
+        return self.vd_helper.load_visuals(data)
 
     def get_target_agent_future(self, idx: int) -> np.ndarray:
         """
