@@ -31,6 +31,9 @@ class NuScenesTrajectories(SingleAgentDataset):
         self.t_h = args['t_h']
         self.t_f = args['t_f']
 
+        self.vd_helper = VisualDataHelper(helper.data, self.t_h, args['transform'] if 'transform' in args else None)
+
+
     def __len__(self):
         """
         Size of dataset
