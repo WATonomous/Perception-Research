@@ -1,3 +1,4 @@
+version: "3.9"
 services:
   centerpoint: 
     build:
@@ -215,9 +216,10 @@ services:
 
     ipc: host
     tty: true
+    user: ${FIXUID:?}:${FIXGID:?}
 
     volumes:
-      - ./src/PGP/:/root/pgp/
+      - ./src/PGP/:/home/docker/pgp/
       - /mnt/scratch/nuscenes_CLEAN:/nuscenes_CLEAN:ro
       - /mnt/scratch/nuscenes_PGP_PREPROCESS:/nuscenes_PGP_PREPROCESS
       - /mnt/scratch/PGP_lr-scheduler.tar:/PGP_lr-scheduler.tar:ro
@@ -226,5 +228,7 @@ services:
       resources:
         reservations:
           devices:
-            - capabilities: [gpu]
+          - driver: nvidia
+            device_ids: ['0'] # Change to ['0', '1'] to use two GPUs
+            capabilities: [gpu]
             

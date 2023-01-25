@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/evaluate.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["-c", "configs/pgp_gatx2_lvm_traversal.yml", "-r", "/nuscenes_CLEAN", "-d", "/nuscenes_PGP_PREPROCESS", "-o", "/root/pgp/output", "-w", "/PGP_lr-scheduler.tar"]
+            "args": ["-c", "configs/pgp_gatx2_lvm_traversal.yml", "-r", "/nuscenes_CLEAN", "-d", "/nuscenes_PGP_PREPROCESS", "-o", "/home/docker/pgp/output", "-w", "/PGP_lr-scheduler.tar"]
         },
         {
             "name": "pre",
@@ -21,6 +21,15 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": ["-c", "configs/preprocess_nuscenes.yml", "-r", "/nuscenes_CLEAN", "-d", "/nuscenes_PGP_PREPROCESS"]
+        },
+        {
+            "name": "pre-mini",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/preprocess.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": ["-c", "configs/preprocess_nuscenes.yml", "-r", "/nuscenes_CLEAN", "-d", "/home/docker/pgp/mini_preprocess"]
         }
     ]
 }
