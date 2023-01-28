@@ -227,4 +227,27 @@ services:
         reservations:
           devices:
             - capabilities: [gpu]
-            
+
+
+  centerfusion:
+    build:
+      context: .
+      dockerfile: docker/centerfusion/Dockerfile
+
+    ipc: host
+    tty: true
+ 
+    command: /bin/bash -c "jupyter notebook --no-browser --allow-root --ip 0.0.0.0"
+
+    ports:
+      - "8888:8888"
+    volumes:
+      - /mnt/wato-drive/perception/nuscenes_CLEAN:/data/nuscenes
+      - /mnt/wato-drive2/perception/nuscenes_CENTERFUSION:/data/nuscenes_CENTERFUSION
+      - ./src/centerfusion/notebooks/:/home/docker/notebooks
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
