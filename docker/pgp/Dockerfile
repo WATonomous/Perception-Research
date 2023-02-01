@@ -1,11 +1,5 @@
-# FROM nvidia/cuda:10.1-devel-ubuntu18.04
 FROM nvidia/cuda:11.0.3-devel-ubuntu20.04
-
-# RUN apt-get update && apt-get install wget -yq
-# RUN apt-get install build-essential g++ gcc -y
 ENV DEBIAN_FRONTEND noninteractive
-# RUN apt-get install libgl1-mesa-glx libglib2.0-0 -y
-# RUN apt-get install openmpi-bin openmpi-common libopenmpi-dev libgtk2.0-dev git -y
 
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
@@ -32,16 +26,6 @@ RUN pip install \
     tensorboard 
     
 RUN pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
-# RUN pip install torch==1.10.0+cu111 torchvision==0.11.0+cu111 pytorchvideo -f https://download.pytorch.org/whl/cu111/torch_stable.html
-
-# WORKDIR /root
-# RUN apt-get install libgl1-mesa-glx libglib2.0-0 tmux -y
-# RUN pip install setuptools==59.5.0
-# RUN echo "source activate pgp" > ~/.bashrc
-# ENV PATH /opt/conda/envs/env/bin:$PATH
-# COPY src/bevfusion /root/bevfusion
-# WORKDIR /root/bevfusion
-# RUN python setup.py develop
 
 # ================= User Setup ===================
 RUN apt-get update && apt-get install -y curl sudo && \
@@ -64,6 +48,7 @@ RUN USER=docker && \
 
 USER docker:docker
 WORKDIR /home/docker/
+ENV DEBIAN_FRONTEND interactive
 
 ENTRYPOINT ["/usr/local/bin/fixuid"]
 CMD ["sleep", "inf"]
