@@ -1,15 +1,16 @@
 carla:
-  host: '127.0.0.1'
+  host: 'carla_server'
   port: 2000
-  timeout: 5.0
+  timeout: 10.0
   sync:
     fps: 30
-    timeout: 2.0
+    timeout: 10.0
   seed: 23
   traffic_manager_port: 8000
+  townmap: "Town04"
 
 output_dir: "_out"
-max_frames: 100
+max_frames: 10 # Number of frames to capture
 
 weather:
   cloudiness: 0.0
@@ -33,16 +34,15 @@ spawn_actors:
       transform:
         location: {x: -6.0, z: 1.5}
       attachment: "rigid"
-    - blueprint:
-        name: "sensor.camera.depth"
-        attr: {"image_size_x": "800", "image_size_y": "600"}
-      transform:
-        location: {x: -6.0, z: 1.5}
-      attachment: "rigid"
-    - blueprint:
-        name: "sensor.camera.instance_segmentation"
-        attr: {"image_size_x": "800", "image_size_y": "600"}
-      transform:
-        location: {x: -6.0, z: 1.5}
-      attachment: "rigid"
-
+    # - blueprint:
+    #     name: "sensor.camera.depth"
+    #     attr: {"image_size_x": "800", "image_size_y": "600"}
+    #   transform:
+    #     location: {x: -6.0, z: 1.5}
+    #   attachment: "rigid"
+    # - blueprint:
+    #     name: "sensor.camera.instance_segmentation"
+    #     attr: {"image_size_x": "800", "image_size_y": "600"}
+    #   transform:
+    #     location: {x: -6.0, z: 1.5}
+    #   attachment: "rigid"

@@ -1,16 +1,16 @@
 carla:
-  host: '127.0.0.1'
+  host: 'carla_server'
   port: 2000
-  timeout: 5.0
+  timeout: 10.0
   sync:
-    fps: 30
-    timeout: 2.0
+    fps: 10
+    timeout: 10.0
   seed: 90
   townmap: "Town10HD"
   traffic_manager_port: 8000
 
 output_dir: "_out"
-max_frames: 50 
+max_frames: 10 
 
 weather:
   cloudiness: 0.0
@@ -45,4 +45,3 @@ spawn_actors:
       location: {x: -114, y: -24.6, z: 1.6}
       rotation: {yaw: 180}
   
-

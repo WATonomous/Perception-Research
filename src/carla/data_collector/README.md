@@ -1,10 +1,32 @@
 # Carla Data Collector
 
 This data collection tool performs the following two tasks:
-- ```carla_data_saver.py``` works with CARLA and ScenarioRunner (optional) to save CARLA sensor data and simulation metadata. This can be used to generate an object detection synthetic dataset or object tracking synthetic dataset. Example configuration files are in folder configs.
-- ```carla_annotator.py``` generates annotations for CARLA camera images saved by carla_data_saver.py. Two annotation formats are supported: [kwcoco](https://kwcoco.readthedocs.io/en/release/) and [MOTS](https://motchallenge.net/instructions)
+- `carla_data_saver.py` works with CARLA and ScenarioRunner (optional) to save CARLA sensor data and simulation metadata. This can be used to generate an object detection synthetic dataset or object tracking synthetic dataset. Example configuration files are in folder configs.
+- `carla_annotator.py` generates annotations for CARLA camera images saved by carla_data_saver.py. Two annotation formats are supported: [kwcoco](https://kwcoco.readthedocs.io/en/release/) and [MOTS](https://motchallenge.net/instructions)
 
 The original code for this tool was found [here](https://github.com/carla-simulator/carla/pull/4992)
+
+### Crashes
+
+```bash
+perception-research-carla_server-1  | sh: 1: xdg-user-dir: not found
+perception-research-carla_server-1  | Signal 11 caught.
+perception-research-carla_server-1  | Malloc Size=65538 LargeMemoryPoolOffset=65554 
+perception-research-carla_server-1  | 4.26.2-0+++UE4+Release-4.26 522 0
+perception-research-carla_server-1  | Disabling core dumps.
+perception-research-carla_server-1  | CommonUnixCrashHandler: Signal=11
+perception-research-carla_server-1  | Engine crash handling finished; re-raising signal 11 for the default handler. Good bye.
+perception-research-carla_server-1  | Segmentation fault (core dumped)
+perception-research-carla_server-1 exited with code 139
+```
+
+To prevent crashes:
+- Set a higher timeout interval (i.e. 10.0s). The default 2.0s (for sync.) crashes a lot.
+- Reduce the number of sensors you are mounting (i.e only camera)
+
+
+
+
 
 ### Steps to use the data collection tool:
 
