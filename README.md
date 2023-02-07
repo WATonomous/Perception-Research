@@ -10,7 +10,6 @@ This repository is used as a playground to run perception experiments. Each of t
 To get started, run the following script to setup some environment variables
 
 ```bash
-chmod +x initialize.sh
 ./initialize.sh
 ```
 

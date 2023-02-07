@@ -60,7 +60,7 @@ class Evaluator:
         agg_metrics = self.initialize_aggregate_metrics()
 
         with torch.no_grad():
-            for i, data in enumerate(self.dl):
+           for i, data in enumerate(self.dl):
 
                 # Load data
                 data = u.send_to_device(u.convert_double_to_float(data))
