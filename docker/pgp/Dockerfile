@@ -1,7 +1,7 @@
 FROM nvidia/cuda:11.0.3-devel-ubuntu20.04
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC
+# RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 
 # python
