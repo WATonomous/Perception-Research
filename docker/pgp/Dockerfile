@@ -34,6 +34,7 @@ RUN pip install imageio
 RUN pip install tensorboard
 WORKDIR /root
 RUN apt-get install libgl1-mesa-glx libglib2.0-0 tmux -y
+RUN pip install setuptools==59.5.0
 RUN echo "source activate pgp" > ~/.bashrc
 ENV PATH /opt/conda/envs/env/bin:$PATH
 # COPY src/bevfusion /root/bevfusion

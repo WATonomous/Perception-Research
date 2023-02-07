@@ -1,4 +1,5 @@
 from datasets.interface import SingleAgentDataset
+from datasets.visual_data_helper import VisualDataHelper
 from nuscenes.eval.prediction.splits import get_prediction_challenge_split
 from nuscenes.prediction import PredictHelper
 import numpy as np
@@ -31,6 +32,9 @@ class NuScenesTrajectories(SingleAgentDataset):
         self.t_h = args['t_h']
         self.t_f = args['t_f']
 
+        self.vd_helper = VisualDataHelper(helper.data, self.t_h, args['transform'] if 'transform' in args else None)
+
+
     def __len__(self):
         """
         Size of dataset
@@ -47,11 +51,13 @@ class NuScenesTrajectories(SingleAgentDataset):
         map_representation = self.get_map_representation(idx)
         surrounding_agent_representation = self.get_surrounding_agent_representation(idx)
         target_agent_representation = self.get_target_agent_representation(idx)
+        target_agent_visuals = self.vd_helper.get_target_agent_visuals(s_t, i_t, self.t_h)
         inputs = {'instance_token': i_t,
                   'sample_token': s_t,
                   'map_representation': map_representation,
                   'surrounding_agent_representation': surrounding_agent_representation,
-                  'target_agent_representation': target_agent_representation}
+                  'target_agent_representation': target_agent_representation,
+                  'target_agent_visuals': target_agent_visuals}
         return inputs
 
     def get_ground_truth(self, idx: int) -> Dict:
@@ -87,7 +93,7 @@ class NuScenesTrajectories(SingleAgentDataset):
 
         with open(filename, 'rb') as handle:
             data = pickle.load(handle)
-        return data
+        return self.vd_helper.load_visuals(data)
 
     def get_target_agent_future(self, idx: int) -> np.ndarray:
         """
