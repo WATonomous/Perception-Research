@@ -35,11 +35,16 @@ class NuScenesGraphs(NuScenesVector):
         """
         num_lane_nodes, max_nbr_nodes = self.get_map_representation(idx)
         num_vehicles, num_pedestrians = self.get_surrounding_agent_representation(idx)
+        i_t, s_t = self.token_list[idx].split("_")
+        target_agent_visuals = self.vd_helper.get_target_agent_visuals(s_t, i_t, self.t_h)
+
         stats = {
             'num_lane_nodes': num_lane_nodes,
             'max_nbr_nodes': max_nbr_nodes,
             'num_vehicles': num_vehicles,
-            'num_pedestrians': num_pedestrians
+            'num_pedestrians': num_pedestrians,
+            'visual_missing': 2*self.t_h + 1 - len(target_agent_visuals),
+            'visual_nulls': len([t for t in target_agent_visuals if t is None])
         }
 
         return stats
