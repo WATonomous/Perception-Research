@@ -37,12 +37,12 @@ test_set_args:
   transform:
     <<: *common_transform
 
-batch_size: 32
-num_workers: 4
+batch_size: 64
+num_workers: 16
 
 
 # Encoder parameters
-encoder_type: 'pgp_encoder'
+encoder_type: 'pgp_visual_encoder'
 encoder_args:
   target_agent_feat_size: 5
   target_agent_emb_size: 16
