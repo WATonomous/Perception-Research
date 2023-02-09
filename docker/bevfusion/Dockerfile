@@ -25,4 +25,10 @@ RUN pip install numba==0.48.0
 WORKDIR /root
 COPY src/bevfusion /root/bevfusion
 WORKDIR /root/bevfusion
+
+ENV PATH=/usr/local/cuda-11.3/bin:$PATH
+ENV LD_LIBRARY_PATH=/usr/local/cuda-11.3/lib64:$LD_LIBRARY_PATH
+ENV CUDA_HOME=/usr/local/cuda-11.3
+ENV FORCE_CUDA=1
+
 RUN python setup.py develop
