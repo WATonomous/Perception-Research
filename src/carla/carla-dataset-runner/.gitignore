@@ -1,0 +1,11 @@
+*.hdf5
+*.mp4
+*.jpeg
+*.png
+*.job
+*.idea
+*.pyc
+__pycache__/
+data/
+
+
