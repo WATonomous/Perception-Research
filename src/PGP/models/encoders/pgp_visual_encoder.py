@@ -8,21 +8,38 @@ import torch.nn as nn
 class PGPVisualEncoder(PGPEncoder):
     def __init__(self, args: T.Dict):
         super().__init__(args)
-        self.resnet_C = 512
-        self.roi_output_size = 7
-        vis_feature_size = self.resnet_C*(self.roi_output_size**2)
-        self.target_agent_visual_emb = nn.Linear(vis_feature_size, 1024)
-        self.target_agent_visual_enc = nn.GRU(1024, 2048, batch_first=True)
-        self.target_agent_geo_vis_fuse = nn.Linear(2048 + args['target_agent_enc_size'], args['target_agent_enc_size'])
         self.resnet = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True)
+
+        self.resnet_channels = args['resnet_channels']
+        self.roi_output_size = args['roi_output_size']
+        self.post_roi_mlp: T.List[int] = args['post_roi_mlp']
+        assert(len(self.post_roi_mlp) > 0)
+        self.target_agent_vis_enc_size = args['target_agent_vis_enc_size']
+        self.geo_vis_fuse_mlp = args['geo_vis_fuse_mlp']
+
+        # MLP to embed roi feat
+        roi_feat_size = self.resnet_channels * (self.roi_output_size**2)
+        self.target_agent_visual_emb = self._construct_mlp([roi_feat_size] + self.post_roi_mlp)
+
+        # GRU to encode roi sequences
+        self.target_agent_visual_enc = nn.GRU(self.post_roi_mlp[-1], self.target_agent_vis_enc_size, batch_first=True)
+
+        # MLP to fuse visual and geometric feats after they're individually encoded
+        fuse_input_size = self.target_agent_vis_enc_size + args['target_agent_enc_size']
+        fuse_output_size = args['target_agent_enc_size']
+        self.target_agent_geo_vis_fuse = self._construct_mlp([fuse_input_size] + self.geo_vis_fuse_mlp + [fuse_output_size])
+
+    def _construct_mlp(self, layers: T.List[int]) -> nn.Sequential:
+        mlp = []
+        for i in range(1, len(layers)):
+            mlp.append(nn.Linear(layers[i-1], layers[i]))
+        return nn.Sequential(*mlp)
     
     def _foward_target_encoding(self, inputs):
         geo_enc = super()._foward_target_encoding(inputs)
         vis_enc = self._vis_encoding(inputs)
         target_enc = self.target_agent_geo_vis_fuse(torch.cat((geo_enc, vis_enc),dim=1))
-        # print(target_enc.shape)
         return target_enc
-        # return geo_enc
 
     def _vis_encoding(self, inputs):
         # [N, L, 256 * (roi_output_size**2)]
