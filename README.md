@@ -15,7 +15,7 @@ To get started, run the following script to setup some environment variables
 
 Then, run the `docker compose up` command, followed by the name of the service you are interested in (if you don't specify, you will end up launching every single service...). You can find all the services we have under [docker-compose.yml](./docker-compose.yml).
 ```bash
-docker compose up <imageName> # ex: docker compose up yolov5
+docker compose -p <userId> up <imageName> # ex: docker compose -p s36gong up yolov5
 ```
 
 Then, to enter the terminal of the Docker container, open a new terminal and run

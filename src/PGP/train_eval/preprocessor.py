@@ -82,6 +82,9 @@ def compute_dataset_stats(dataset_splits: List[TrajectoryDataset], batch_size: i
                 print("mini batch " + str(mini_batch_count + 1) + '/' + str(num_mini_batches))
                 mini_batch_count += 1
 
+    # Print stats
+    if verbose:
+        print(stats)
     # Save stats
     filename = os.path.join(dataset_splits[0].data_dir, 'stats.pickle')
     with open(filename, 'wb') as handle:
