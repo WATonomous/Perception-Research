@@ -13,7 +13,7 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
      /bin/bash ~/miniconda.sh -b -p /opt/conda
 # Put conda in path so we can use conda activate
 ENV PATH=$CONDA_DIR/bin:$PATH
-RUN conda create --f src/hyrsm/environment.yaml
+RUN conda create -f src/hyrsm/environment.yaml
 SHELL ["conda", "run", "-n", "hyrsm", "/bin/bash", "-c"]
 # RUN conda install python=3.8
 # Versions specificed in PGP
