@@ -13,8 +13,8 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
      /bin/bash ~/miniconda.sh -b -p /opt/conda
 # Put conda in path so we can use conda activate
 ENV PATH=$CONDA_DIR/bin:$PATH
-RUN conda create --name pgp
-SHELL ["conda", "run", "-n", "pgp", "/bin/bash", "-c"]
+RUN conda create --name hyrsm
+SHELL ["conda", "run", "-n", "hyrsm", "/bin/bash", "-c"]
 # RUN conda install python=3.8
 # Versions specificed in PGP
 # RUN conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=10.1 -c pytorch
