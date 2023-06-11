@@ -1,7 +1,6 @@
 import numpy as np
 import torch
 from PIL import Image
-from cv2 import imread, cvtColor, COLOR_BGR2RGB
 from pyquaternion.quaternion import Quaternion
 from typing import List, Tuple, Union, Dict
 from shapely.geometry import MultiPoint, box
@@ -12,8 +11,9 @@ from nuscenes.utils.geometry_utils import view_points
 from torchvision import transforms
 
 class VisualDataHelper(object):
-    def __init__(self, nusc: NuScenes, transform: transforms.Compose = None):
+    def __init__(self, nusc: NuScenes, t_h: int, transform: transforms.Compose = None):
         self.nusc = nusc
+        self.t_h = t_h
         if transform is None:
             self.transform = None
         else:
@@ -151,6 +151,9 @@ class VisualDataHelper(object):
         return sorted(views, key=area, reverse=True)[0]
     
     def get_target_agent_visuals(self, s_t: str, i_t: str, seconds: int) -> List[Dict]:
+        """
+        Gets the visual information for agent instance `i_t` at sample time `s_t`, for the past `seconds`
+        """
         curr_ann_tok = self._ann_token_from_sample_instance(s_t, i_t)
         ann_rec = self.nusc.get('sample_annotation', curr_ann_tok)
         ann_rec_hist = [ann_rec]
@@ -171,13 +174,44 @@ class VisualDataHelper(object):
         return views
     
     def load_visuals(self, data: Dict):
+        """
+        Using the information in data['inputs']['target_agent_visuals'], which is a variable size List (1 to 5 elements) of
+            Dict{
+                'cam_file': str,
+                'roi_min_x': float,
+                'roi_min_y': float,
+                'roi_max_y': float,
+                'roi_max_y': float
+            }
+        
+        This function relaces the data['inputs']['target_agent_visuals'] key with a tensor of padded ROIs of shape (L=5, F=4)
+            where the last dim (F) is the vector [roi_min_x, roi_min_y, roi_max_x, roi_max_y]. The L dimension is
+            padded with all-zero ROIs if we have no visual information for that element in the sequence
+
+        This function also adds the key data['inputs']['target_agent_images'], which is a tensor of shape (L=5, C=3, W, H)
+            which is the transformed image data transformed by self.transform
+            Again, the L dim is padded with zero-valued images if we have no image for that element in the sequence
+
+        This function also adds the key data['inputs']['target_agent_image_masks'], which is the same shape as
+            data['inputs']['target_agent_images'] (L=5, C=3, W, H). The mask is 1 in sequence elements (accross the L dim)
+            that are valid images, and 0 else where
+        
+        """
         if self.transform is None:
             return data
         visuals = data['inputs']['target_agent_visuals']
         imgs = [Image.open(f"{self.nusc.dataroot}/{v['cam_file']}") for v in visuals]
+        rois = [torch.tensor([v['roi_min_x'], v['roi_min_y'], v['roi_max_x'], v['roi_max_y']]) for v in visuals]
         imgs = [img.convert("RGB") for img in imgs]
-        data['inputs']['target_agent_images'] = \
-            torch.stack([self.transform(img) for img in imgs])
+        imgs = [self.transform(img) for img in imgs]
+        data['inputs']['target_agent_image_sequence_len'] = len(imgs)
+        img_shape = imgs[0].shape
+        while (len(imgs) < self.t_h*2+1):
+            imgs.append(torch.zeros(img_shape))
+            rois.append(torch.zeros(4, dtype=rois[0].dtype))
+        data['inputs']['target_agent_visuals'] = torch.stack(rois)
+        data['inputs']['target_agent_images'] = torch.stack(imgs)
+        
         return data
 
 

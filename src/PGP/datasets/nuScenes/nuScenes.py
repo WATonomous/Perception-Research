@@ -24,7 +24,6 @@ class NuScenesTrajectories(SingleAgentDataset):
         """
         super().__init__(mode, data_dir)
         self.helper = helper
-        self.vd_helper = VisualDataHelper(helper.data, args['transform'] if 'transform' in args else None)
 
         # nuScenes sample and instance tokens for prediction challenge
         self.token_list = get_prediction_challenge_split(args['split'], dataroot=helper.data.dataroot)
@@ -32,6 +31,9 @@ class NuScenesTrajectories(SingleAgentDataset):
         # Past and prediction horizons
         self.t_h = args['t_h']
         self.t_f = args['t_f']
+
+        self.vd_helper = VisualDataHelper(helper.data, self.t_h, args['transform'] if 'transform' in args else None)
+
 
     def __len__(self):
         """

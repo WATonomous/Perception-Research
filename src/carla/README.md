@@ -1,14 +1,30 @@
-# Carla Data Generation
+# Synthetic Data Generation in CARLA
 
-For the data generation work, we use 2 [containers](../../profiles/carla.docker-compose.yml), the base carla image and a carla development image
-- The base carla container runs the carla simulation server
-- The carla development container has a copy of the carla python api which we can use to interface with the simulation
-    - there is a jupyter notebook server to make testing easier
+### Getting Started
+For the data generation work, we use 2 [containers](../../profiles/carla.docker-compose.yml), `carla_server` (base CARLA image to run the CARLA engine) and `carla_dev` (CARLA development image to interface with the CARLA engine).
 
-## To do
-- Not sure if we do even need carla_dev
-    - Everything could be done in the carla_server, but I think this could be useful considering carla_server does tend to crash frequently
-- integrate the [data_collector](https://github.com/carla-simulator/carla/pull/4992)
+
+Start up the CARLA server by running
+```bash
+docker compose -p <user_id> up carla_server
+```
+
+Then, start up the CARLA dev environment by running
+```bash
+docker compose -p <user_id> up carla_dev
+```
+
+
+### First Project: Generating Traffic Sign Bounding Boxes
+More documentation inside [carla-dataset-runner](carla-dataset-runner/README.md)
+
+
+
+
+
+
+
+
 
 ## Version Discrepencies
 - We run Carla offscreen which leads to some issues. see [here](https://carla.readthedocs.io/en/latest/adv_rendering_options/)
@@ -52,4 +68,3 @@ profiles-carla_server-1 exited with code 139
 
 - Worlds that I have never loaded successfully
     - Town03(_Opt)
-
