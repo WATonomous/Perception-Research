@@ -11,7 +11,16 @@
             "program": "${workspaceFolder}/evaluate.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["-c", "configs/pgp_gatx2_lvm_traversal.yml", "-r", "/nuscenes_CLEAN", "-d", "/nuscenes_PGP_PREPROCESS/no_visuals", "-o", "/pgp_output", "-w", "/PGP_lr-scheduler.tar"]
+            "args": ["-c", "configs/pgp_gatx2_lvm_traversal.yml", "-r", "/nuscenes_CLEAN", "-d", "/nuscenes_PGP_PREPROCESS/no_visuals", "-o", "/home/docker/pgp/output", "-w", "/PGP_lr-scheduler.tar"]
+        },
+        {
+            "name": "train",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": ["-c", "configs/pgp_gatx2_lvm_traversal.yml", "-r", "/nuscenes_CLEAN", "-d", "/nuscenes_PGP_PREPROCESS/no_visuals", "-o", "/home/docker/pgp/output", "-w", "/PGP_lr-scheduler.tar", "-n", "5"]
         },
         {
             "name": "eval_visual",
@@ -47,7 +56,7 @@
             "program": "${workspaceFolder}/preprocess.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["-c", "configs/preprocess_nuscenes.yml", "-r", "/nuscenes_CLEAN", "-d", "/root/pgp/mini_preprocess"]
+            "args": ["-c", "configs/preprocess_nuscenes.yml", "-r", "/nuscenes_CLEAN", "-d", "/home/docker/pgp/mini_preprocess"]
         }
     ]
 }
