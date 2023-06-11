@@ -223,6 +223,7 @@ services:
       - /mnt/scratch/nuscenes_CLEAN:/nuscenes_CLEAN:ro
       - /mnt/scratch/nuscenes_PGP_PREPROCESS:/nuscenes_PGP_PREPROCESS
       - /mnt/scratch/PGP_lr-scheduler.tar:/PGP_lr-scheduler.tar:ro
+      - /mnt/scratch/pgp_output:/pgp_output
 
     deploy:
       resources:
