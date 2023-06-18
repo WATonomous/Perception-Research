@@ -204,15 +204,14 @@ class VisualDataHelper(object):
         rois = [torch.tensor([v['roi_min_x'], v['roi_min_y'], v['roi_max_x'], v['roi_max_y']]) for v in visuals]
         imgs = [img.convert("RGB") for img in imgs]
         imgs = [self.transform(img) for img in imgs]
+        data['inputs']['target_agent_image_sequence_len'] = len(imgs)
         img_shape = imgs[0].shape
-        masks = [torch.zeros(img_shape) for _ in imgs]
         while (len(imgs) < self.t_h*2+1):
             imgs.append(torch.zeros(img_shape))
-            masks.append(torch.ones(img_shape))
             rois.append(torch.zeros(4, dtype=rois[0].dtype))
-        visuals = data['inputs']['target_agent_visuals'] = torch.stack(rois)
+        data['inputs']['target_agent_visuals'] = torch.stack(rois)
         data['inputs']['target_agent_images'] = torch.stack(imgs)
-        data['inputs']['target_agent_image_masks'] = torch.stack(masks)
+        
         return data
 
 

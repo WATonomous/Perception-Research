@@ -92,10 +92,7 @@ class PGPEncoder(PredictionEncoder):
         """
 
         # Encode target agent
-        target_agent_feats = inputs['target_agent_representation']
-        target_agent_embedding = self.leaky_relu(self.target_agent_emb(target_agent_feats))
-        _, target_agent_enc = self.target_agent_enc(target_agent_embedding)
-        target_agent_enc = target_agent_enc.squeeze(0)
+        target_agent_enc = self._foward_target_encoding(inputs)
 
         # Encode lane nodes
         lane_node_feats = inputs['map_representation']['lane_node_feats']
@@ -160,6 +157,12 @@ class PGPEncoder(PredictionEncoder):
             encodings['edge_type'] = inputs['map_representation']['edge_type']
 
         return encodings
+
+    def _foward_target_encoding(self, inputs):
+        target_agent_feats = inputs['target_agent_representation']
+        target_agent_embedding = self.leaky_relu(self.target_agent_emb(target_agent_feats))
+        _, target_agent_enc = self.target_agent_enc(target_agent_embedding)
+        return target_agent_enc.squeeze(0)
 
     @staticmethod
     def variable_size_gru_encode(feat_embedding: torch.Tensor, masks: torch.Tensor, gru: nn.GRU) -> torch.Tensor:

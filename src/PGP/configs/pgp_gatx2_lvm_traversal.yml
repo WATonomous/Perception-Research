@@ -24,8 +24,8 @@ test_set_args:
   split: 'val'
   random_flips: False
 
-batch_size: 32
-num_workers: 32
+batch_size: 64
+num_workers: 64
 
 
 # Encoder parameters
