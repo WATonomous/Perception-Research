@@ -86,6 +86,20 @@ services:
           devices:
             - capabilities: [gpu]
 
+  cuda-bevfusion: 
+    build:
+      context: .
+      dockerfile: docker/cuda-bevfusion/Dockerfile
+    image: git.uwaterloo.ca:5050/watonomous/registry/perception-research/cuda-bevfusion
+
+    ipc: host
+    tty: true
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
 
   mmdetection3d: 
     build:
